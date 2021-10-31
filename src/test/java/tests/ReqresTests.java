@@ -1,11 +1,7 @@
 package tests;
-
-import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-
 
 public class ReqresTests {
     String URL = "https://reqres.in";
@@ -14,38 +10,41 @@ public class ReqresTests {
     public void ListUsers() {
         given().
                 log().all().
-                when().
+        when().
                 get(URL + "/api/users?page=2").
-                then().
+        then().
                 statusCode(200).
                 body("data[0].email", equalTo("michael.lawson@reqres.in"));
     }
 
     @Test(description = "Single user, RESPONSE:200")
     public void SingleUser() {
-        given().log().all().
-                when().
+        given().
+                log().all().
+        when().
                 get(URL + "/api/users/2").
-                then().
+        then().
                 statusCode(200).
                 body("support.text", equalTo("To keep ReqRes free, contributions towards server costs are appreciated!"));
     }
 
     @Test(description = "Single user not found, RESPONSE:404")
     public void SingleUserNotFound() {
-        given().log().all().
-                when().
+        given().
+                log().all().
+        when().
                 get(URL + "/api/users/23").
-                then().
+        then().
                 statusCode(404);
     }
 
     @Test(description = "List <RESOURCE>, RESPONSE:200")
     public void ListResource() {
-        given().log().all().
-                when().
+        given().
+                log().all().
+        when().
                 get(URL + "/api/unknown").
-                then().
+        then().
                 statusCode(200).
                 body("data[0].color", equalTo("#98B2D1")).
                 body("data[1].color", equalTo("#C74375"));
@@ -53,10 +52,11 @@ public class ReqresTests {
 
     @Test(description = "Single <RESOURCE>, RESPONSE:200")
     public void SingleResource() {
-        given().log().all().
-                when().
+        given().
+                log().all().
+        when().
                 get(URL + "/api/unknown/2").
-                then().
+        then().
                 statusCode(200).
                 body("data.color", equalTo("#C74375")).
                 body("support.url", equalTo("https://reqres.in/#support-heading"));
@@ -64,10 +64,11 @@ public class ReqresTests {
 
     @Test(description = "Single <RESOURCE> not found, RESPONSE:404")
     public void SingleNotFound() {
-        given().log().all().
-                when().
+        given().
+                log().all().
+        when().
                 get(URL + "/api/unknown/23").
-                then().
+        then().
                 statusCode(404);
     }
 
@@ -79,14 +80,13 @@ public class ReqresTests {
                         "\t\"job\":\"leader\"\n" + "}").
                 header("Content-Type", "application/json").
                 log().all().
-                when().
+        when().
                 post(URL + "/api/users").
-                then().
+        then().
                 log().all().
                 statusCode(201).
                 body("name", equalTo("morpheus"),
                         "job", equalTo("leader"));
-
     }
 
     @Test(description = "Put update, RESPONSE:200")
@@ -97,26 +97,24 @@ public class ReqresTests {
                         "\t\"job\":\"zion resident\"\n" + "}").
                 header("Content-Type", "application/json").
                 log().all().
-                when().
+        when().
                 put(URL + "/api/users/2").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 body("name", equalTo("morpheus"),
                         "job", equalTo("zion resident"));
-
     }
 
     @Test(description = "Delete, RESPONSE:204")
     public void Delete() {
         given().
                 log().all().
-                when().
+        when().
                 delete(URL + "/api/users/2").
-                then().
+        then().
                 log().all().
                 statusCode(204);
-
     }
 
     @Test(description = "Post, Register Successful, RESPONSE:200")
@@ -127,9 +125,9 @@ public class ReqresTests {
                         "\t\"password\":\"pistol\"\n" + "}").
                 header("Content-Type", "application/json").
                 log().all().
-                when().
+        when().
                 post(URL + "/api/register").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 body("id", equalTo(4),
@@ -143,9 +141,9 @@ public class ReqresTests {
                         "\t\"email\":\"eve.holt@reqres.in\"\n" + "}").
                 header("Content-Type", "application/json").
                 log().all().
-                when().
+        when().
                 post(URL + "/api/register").
-                then().
+        then().
                 log().all().
                 statusCode(400).
                 body("error", equalTo("Missing password"));
@@ -159,13 +157,14 @@ public class ReqresTests {
                         "\t\"password\":\"cityslicka\"\n" + "}").
                 header("Content-Type", "application/json").
                 log().all().
-                when().
+        when().
                 post(URL + "/api/login").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 body("token", equalTo("QpwL5tke4Pnpja7X4"));
     }
+
     @Test(description = "Post, Login Unsuccessful, RESPONSE:400")
     public void PostLoginUnsuccessful() {
         given().
@@ -173,20 +172,21 @@ public class ReqresTests {
                         "\t\"email\":\"peter@klaven\"\n" + "}").
                 header("Content-Type", "application/json").
                 log().all().
-                when().
+        when().
                 post(URL + "/api/login").
-                then().
+        then().
                 log().all().
                 statusCode(400).
                 body("error", equalTo("Missing password"));
     }
+
     @Test(description = "Get, Delayed Response, RESPONSE:200")
     public void GetDelayedResponse() {
         given().
                 log().all().
-                when().
+        when().
                 get(URL + "/api/users?delay=3").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 body("data[0].id", equalTo(1));
