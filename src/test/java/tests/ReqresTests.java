@@ -166,8 +166,22 @@ public class ReqresTests {
                 statusCode(200).
                 body("token", equalTo("QpwL5tke4Pnpja7X4"));
     }
-    @Test(description = "Get, Delayed Response, RESPONSE:200")
+    @Test(description = "Post, Login Unsuccessful, RESPONSE:400")
     public void PostLoginUnsuccessful() {
+        given().
+                body("{\n" +
+                        "\t\"email\":\"peter@klaven\"\n" + "}").
+                header("Content-Type", "application/json").
+                log().all().
+                when().
+                post(URL + "/api/login").
+                then().
+                log().all().
+                statusCode(400).
+                body("error", equalTo("Missing password"));
+    }
+    @Test(description = "Get, Delayed Response, RESPONSE:200")
+    public void GetDelayedResponse() {
         given().
                 log().all().
                 when().
