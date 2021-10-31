@@ -107,4 +107,74 @@ public class ReqresTests {
 
     }
 
+    @Test(description = "Delete, RESPONSE:204")
+    public void Delete() {
+        given().
+                log().all().
+                when().
+                delete(URL + "/api/users/2").
+                then().
+                log().all().
+                statusCode(204);
+
+    }
+
+    @Test(description = "Post, Register Successful, RESPONSE:200")
+    public void PostRegister() {
+        given().
+                body("{\n" +
+                        "\t\"email\":\"eve.holt@reqres.in\",\n" +
+                        "\t\"password\":\"pistol\"\n" + "}").
+                header("Content-Type", "application/json").
+                log().all().
+                when().
+                post(URL + "/api/register").
+                then().
+                log().all().
+                statusCode(200).
+                body("id", equalTo(4),
+                        "token", equalTo("QpwL5tke4Pnpja7X4"));
+    }
+
+    @Test(description = "Post, Register Unsuccessful, RESPONSE:400")
+    public void PostRegisterUnsuccessful() {
+        given().
+                body("{\n" +
+                        "\t\"email\":\"eve.holt@reqres.in\"\n" + "}").
+                header("Content-Type", "application/json").
+                log().all().
+                when().
+                post(URL + "/api/register").
+                then().
+                log().all().
+                statusCode(400).
+                body("error", equalTo("Missing password"));
+    }
+
+    @Test(description = "Post, Login Successful, RESPONSE:200")
+    public void PostLoginSuccessful() {
+        given().
+                body("{\n" +
+                        "\t\"email\":\"eve.holt@reqres.in\",\n" +
+                        "\t\"password\":\"cityslicka\"\n" + "}").
+                header("Content-Type", "application/json").
+                log().all().
+                when().
+                post(URL + "/api/login").
+                then().
+                log().all().
+                statusCode(200).
+                body("token", equalTo("QpwL5tke4Pnpja7X4"));
+    }
+    @Test(description = "Get, Delayed Response, RESPONSE:200")
+    public void PostLoginUnsuccessful() {
+        given().
+                log().all().
+                when().
+                get(URL + "/api/users?delay=3").
+                then().
+                log().all().
+                statusCode(200).
+                body("data[0].id", equalTo(1));
+    }
 }
